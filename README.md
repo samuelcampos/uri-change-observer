@@ -1,5 +1,7 @@
 # uri-change-observer
 
+[![Build Status](https://travis-ci.org/samuelcampos/uri-change-observer.svg?branch=master)](https://travis-ci.org/samuelcampos/uri-change-observer)
+
 Observe changes on web resources
 
 
