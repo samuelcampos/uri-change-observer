@@ -1,7 +1,6 @@
 const chai = require('chai');
 const expect = chai.expect;
-const URIObservable = require('../lib/index');
-
+import {URIObservable} from '../src/uri-observable';
 
 describe('Add/Remove observers', () => {
     let observable;
@@ -14,13 +13,13 @@ describe('Add/Remove observers', () => {
         it('should throw and error when the "httpOptions" is not an object', () => {
             expect(() => {
                 observable.addObserver();
-            }).to.throw('\'httpOptions\' must be an object')
+            }).to.throw('"httpOptions" must be an object')
         });
 
         it('should throw and error when the "changeCallback" is not a function', () => {
             expect(() => {
                 observable.addObserver({});
-            }).to.throw('\'changeCallback\' must be a function')
+            }).to.throw('"changeCallback" must be a function')
         });
     });
 });

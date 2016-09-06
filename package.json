@@ -17,10 +17,12 @@
     "url": "https://github.com/samuelcampos/uri-change-observer.git"
   },
   "scripts": {
-    "build": "babel lib --presets babel-preset-es2015 --out-dir distribution",
+    "build": "babel src --presets babel-preset-es2015 --out-dir distribution",
     "coverage": "istanbul cover _mocha tests -- -R spec",
-    "prepublish": "npm run build",
-    "test": "mocha tests --recursive"
+    "eslintSource": "./node_modules/.bin/eslint src/*",
+    "eslintTests": "./node_modules/.bin/eslint tests/*",
+    "prepublish": "npm run eslintSource && npm run eslintTests && npm run test && npm run build",
+    "test": "mocha tests --recursive --compilers js:babel-core/register"
   },
   "dependencies": {
     "lodash": "^4.15.0",
@@ -30,6 +32,7 @@
     "babel-cli": "^6.14.0",
     "babel-preset-es2015": "^6.14.0",
     "chai": "^3.5.0",
+    "eslint": "^3.4.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.0.2",
     "sinon": "^1.17.5"

@@ -1,8 +1,10 @@
-const http = require('http');
-const https = require("https");
+// const http = require('http');
+// const https = require("https");
+import * as http from 'http';
+import * as https from 'https';
 
-module.exports = {
-    sendRequest: (options, onResult) => {
+export class HttpRequester {
+    static sendRequest(options, onResult) {
         const protocol = options.port === 443 ? https : http;
 
         const req = protocol.request(options, (res) => {
@@ -17,15 +19,15 @@ module.exports = {
             });
 
             res.on('end', () => {
-                var obj = JSON.parse(output);
+                let obj = JSON.parse(output);
                 onResult(res.statusCode, obj);
             });
         });
 
-        req.on('error', function(err) {
-            //res.send('error: ' + err.message);
+        req.on('error', function (err) {
+            console.log('error: ' + err.message);
         });
 
         req.end();
     }
-};
+}
