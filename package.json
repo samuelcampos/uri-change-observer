@@ -18,11 +18,11 @@
   },
   "scripts": {
     "build": "babel src --presets babel-preset-es2015 --out-dir distribution",
-    "coverage": "istanbul cover _mocha tests -- -R spec",
+    "coverage": "istanbul cover _mocha test -- -R spec",
     "eslintSource": "./node_modules/.bin/eslint src/*",
-    "eslintTests": "./node_modules/.bin/eslint tests/*",
-    "prepublish": "npm run eslintSource && npm run eslintTests && npm run test && npm run build",
-    "test": "mocha tests --recursive --compilers js:babel-core/register"
+    "eslintTest": "./node_modules/.bin/eslint test/*",
+    "preparePublish": "npm run eslintSource && npm run eslintTest && npm run test && npm run build",
+    "test": "mocha test --recursive --compilers js:babel-core/register"
   },
   "dependencies": {
     "lodash": "^4.15.0",
