@@ -1,0 +1,14 @@
+{
+    "env": {
+        "es6": true,
+        "node": true,
+        "jasmine": true
+    },
+    "plugins": ["jasmine"],
+    "extends": ["eslint:recommended",  "plugin:jasmine/recommended"],
+    "rules": {
+        "jasmine/named-spy": 1,
+        "jasmine/no-disabled-tests": 2,
+        "jasmine/valid-expect": 2
+    }
+}

@@ -1,33 +1,65 @@
-// const http = require('http');
-// const https = require("https");
 import * as http from 'http';
 import * as https from 'https';
 
 export class HttpRequester {
-    static sendRequest(options, onResult) {
-        const protocol = options.port === 443 ? https : http;
+    /**
+     * Send a simple HTTP/HTTPS request.
+     *
+     * @static
+     * @param {Object} options the request options
+     * @returns {Promise}
+     *
+     * @memberOf HttpRequester
+     */
+    static sendRequest(options) {
 
-        const req = protocol.request(options, (res) => {
-            console.log('STATUS: ' + res.statusCode);
-            console.log('HEADERS: ' + JSON.stringify(res.headers));
+        let pResult = new Promise((resolve, reject) => {
+            const protocol = options.port === 443 ? https : http;
 
-            let output = '';
-            res.setEncoding('utf8');
+            const req = protocol.request(options, res => {
+                let respChunks = [];
+                // res.setEncoding('utf8');
 
-            res.on('data', (chunk) => {
-                output += chunk;
+                res.on('data', chunk => {
+                    respChunks.push(chunk);
+                });
+
+                res.on('end', () => {
+                    let respData = Buffer.concat(respChunks);
+                    let contentType = res.headers['content-type'] && res.headers['content-type'].split(';')[0];
+                    let data;
+
+                    switch (contentType) {
+                    case 'application/json':
+                        data = JSON.parse(respData.toString());
+                        break;
+
+                    case 'text/html':
+                    case 'text/javascript':
+                    case 'application/x-javascript':
+                    case 'text/css':
+                        data = respData.toString();
+                        break;
+
+                    default:
+                        data = respData;
+                    }
+
+                    resolve({
+                        statusCode: res.statusCode,
+                        headers: res.headers,
+                        data: data
+                    });
+                });
             });
 
-            res.on('end', () => {
-                let obj = JSON.parse(output);
-                onResult(res.statusCode, obj);
+            req.on('error', err => {
+                reject(options, err);
             });
+
+            req.end();
         });
 
-        req.on('error', function (err) {
-            console.log('error: ' + err.message);
-        });
-
-        req.end();
+        return pResult;
     }
 }

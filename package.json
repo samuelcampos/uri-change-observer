@@ -18,10 +18,12 @@
   },
   "scripts": {
     "build": "babel src --presets babel-preset-es2015 --out-dir distribution",
+    "check": "npm run eslint && npm run test",
     "coverage": "istanbul cover _mocha test -- -R spec",
     "eslintSource": "./node_modules/.bin/eslint src/*",
     "eslintTest": "./node_modules/.bin/eslint test/*",
-    "preparePublish": "npm run eslintSource && npm run eslintTest && npm run test && npm run build",
+    "eslint": "npm run eslintSource && npm run eslintTest",
+    "preparePublish": "npm run check && npm run build",
     "test": "mocha test --recursive --compilers js:babel-core/register"
   },
   "dependencies": {
@@ -32,7 +34,8 @@
     "babel-cli": "^6.14.0",
     "babel-preset-es2015": "^6.14.0",
     "chai": "^3.5.0",
-    "eslint": "^3.4.0",
+    "eslint": "^3.5.0",
+    "eslint-plugin-jasmine": "^1.8.1",
     "istanbul": "^0.4.5",
     "mocha": "^3.0.2",
     "sinon": "^1.17.5"
