@@ -1,13 +1,13 @@
 # uri-change-observer
 
 [![Build Status](https://travis-ci.org/samuelcampos/uri-change-observer.svg?branch=master)](https://travis-ci.org/samuelcampos/uri-change-observer)
+[![NPM version](http://img.shields.io/npm/v/uri-change-observer.svg)](https://www.npmjs.com/package/uri-change-observer)
 
-Observe changes on web resources
+
+Observe changes on web resources. This package enables you to register a callback method to be notified when the result of a given HTTP request changes.
 
 
-## Usage
-
-### Installation
+## Installation
 
 You can install using [npm](https://www.npmjs.com/package/uri-change-observer).
 
@@ -15,7 +15,7 @@ You can install using [npm](https://www.npmjs.com/package/uri-change-observer).
 npm install uri-change-observer
 ```
 
-### Usage example
+## Usage example
 
 ```javascript
 var URIObservable = require('uri-change-observer');
