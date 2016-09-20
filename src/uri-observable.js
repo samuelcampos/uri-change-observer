@@ -3,16 +3,16 @@ import {Scheduler} from './scheduler';
 import {HttpRequester} from './http-requester';
 
 function processResponse(observer, response) {
+    let actualLastModified;
+
     if (response.headers['last-modified']) {
-        let actualLastModified = Date.parse(response.headers['last-modified']);
+        actualLastModified = Date.parse(response.headers['last-modified']);
 
         if (actualLastModified > observer.status.lastModified) {
             observer.callback(response.data);
         }
-
-        observer.status.lastModified = actualLastModified;
     } else {
-        if (observer.status.data) {
+        if (observer.status.lastData) {
             if (response.data instanceof Buffer) {
                 if (Buffer.compare(response.data, observer.status.data) !== 0) {
                     observer.callback(response.data);
@@ -27,9 +27,10 @@ function processResponse(observer, response) {
                 }
             }
         }
-
-        observer.status.data = response.data;
     }
+
+    observer.status.lastModified = actualLastModified;
+    observer.status.lastData = response.data;
 }
 
 function processObserver(observer) {
@@ -64,10 +65,13 @@ export class URIObservable {
         let observer = {
             options: httpOptions,
             callback: changeCallback,
-            status: {}
+            status: {
+                lastModified: undefined,
+                lastData: undefined
+            }
         };
 
-        processObserver(observer)
+        return processObserver(observer)
             .then(() => {
                 this._observers.push(observer);
 
@@ -75,14 +79,11 @@ export class URIObservable {
                     this._scheduler.start();
                 }
             });
-            // .catch((options, error) => {
-            //     console.log(error.message);
-            // });
     }
 
     removeObserver(changeCallback) {
         for (let i = 0; i < this._observers.length; i++) {
-            if (this._observers[i].callback !== changeCallback) {
+            if (this._observers[i].callback === changeCallback) {
                 this._observers.splice(1, 1);
 
                 if (this._observers.length === 1) {
@@ -94,5 +95,13 @@ export class URIObservable {
         }
 
         return false;
+    }
+
+    getLastKnownStatus(changeCallback) {
+        for (let i = 0; i < this._observers.length; i++) {
+            if (this._observers[i].callback === changeCallback) {
+                return this._observers[i].status;
+            }
+        }
     }
 }

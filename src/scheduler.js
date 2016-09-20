@@ -23,7 +23,7 @@ export class Scheduler {
     }
 
     /**
-     *
+     * Check if this Scheduler is active
      *
      * @returns {boolean} true if this Scheduler is active, false otherwise
      */
