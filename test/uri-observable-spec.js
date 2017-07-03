@@ -48,8 +48,8 @@ describe('URIObservable', () => {
                 });
             });
 
-            let callbackSpy = jasmine.createSpy('callbackSpy');
-            let requestOptions = {
+            const callbackSpy = jasmine.createSpy('callbackSpy');
+            const requestOptions = {
                 host: 'samuelcampos.net'
             };
 
